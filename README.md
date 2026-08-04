@@ -54,9 +54,9 @@ against real clinical presentations (and documented false-positive/negative
 cases it was specifically fixed to avoid), role-based auth, rate limiting,
 and a Dockerized deployment path with CI/CD.
 
-A full technical audit — architecture, every API route, the ML pipeline's
+A full technical audit architecture, every API route, the ML pipeline's
 design decisions, a confusion-matrix-driven analysis of model weak spots,
-and honestly-documented known limitations — lives in
+and honestly-documented known limitations lives in
 [`PROJECT_REPORT.md`](PROJECT_REPORT.md).
 
 ---
@@ -306,19 +306,6 @@ are in [`PROJECT_REPORT.md`](PROJECT_REPORT.md#10-api-documentation).
 - Role-based authorization (`patient` / `doctor` / `guest`) + ownership checks
 - Zod input validation on every mutating endpoint
 - Centralized error handling (no stack traces leaked in production)
-
----
-
-## Known Limitations
-
-This project documents its own gaps rather than hiding them — see
-[`PROJECT_REPORT.md`](PROJECT_REPORT.md#17-limitations) for the full,
-verified list, including:
-
-- 17 of 42 disease classes have no free-text training examples (structured-data-only)
-- Two confirmed severity-phrase-matcher edge cases (documented, not yet patched)
-- A hand-written regression suite currently passes 26/28 — the two failures are root-caused, genuine data gaps (not pipeline bugs)
-- PostgreSQL is the only live database; a parallel MongoDB migration path exists but isn't wired to any controller yet
 
 ---
 
