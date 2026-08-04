@@ -1,0 +1,23 @@
+fastapi>=0.115,<0.116
+uvicorn[standard]>=0.34,<0.35
+chromadb>=0.5.23,<0.6
+sentence-transformers>=3.3,<3.4
+# No explicit pydantic pin -- fastapi and chromadb each pull in their own
+# compatible version; pinning exactly here forced pip's resolver to
+# backtrack through both packages' full version histories looking for one
+# combination that satisfies an unnecessarily specific constraint.
+
+# chromadb pins tokenizers<=0.20.3 transitively; left unconstrained,
+# sentence-transformers' unpinned `transformers` dependency makes pip search
+# backward from the newest transformers release looking for one whose own
+# tokenizers requirement happens to satisfy that cap -- observed to not
+# converge in a reasonable time. Pinning both explicitly to versions known
+# to satisfy chromadb's constraint skips the search entirely.
+tokenizers<=0.20.3
+transformers<4.47
+
+# Reuses packages/backend/ml/requirements.txt's pandas/joblib for
+# build_knowledge_base.py (reads the same CSVs train_model.py trains on) --
+# install both requirement files into the same environment, not two separate
+# ones, since this package always runs alongside ml/ rather than instead of it.
+-r ../backend/ml/requirements.txt

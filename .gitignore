@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+packages/*/node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+build/
+packages/*/dist/
+packages/*/build/
+*.tsbuildinfo
+# tsc -b emits these alongside vite.config.ts (compiled for the Node/Vite
+# tsconfig project reference) — regenerated on every build, not source.
+packages/frontend/vite.config.js
+packages/frontend/vite.config.d.ts
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing / coverage
+coverage/
+.nyc_output/
+
+# IDE / editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# OS files
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Generated secrets — created by scripts/deploy.sh, never committed
+mongo/mongo-keyfile
+nginx/ssl/
+
+# Python (AI model)
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ML artifacts (regenerate via train_model.py rather than committing binaries)
+*.pkl
+
+# RAG knowledge base (regenerate via rag-service/scripts/build_knowledge_base.py)
+chroma_db/
+
+# Misc
+*.tgz
+.cache/
+.eslintcache

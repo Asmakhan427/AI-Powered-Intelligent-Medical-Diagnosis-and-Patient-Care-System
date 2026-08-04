@@ -1,0 +1,37 @@
+# docker-compose*.yml build the backend/frontend images with `context: .`
+# (the monorepo root, so npm workspaces can resolve correctly), so this is
+# the file Docker actually reads — the per-package .dockerignore files
+# under packages/*/ document the same excludes for anyone building a
+# package standalone with a package-scoped context.
+node_modules
+**/node_modules
+dist
+**/dist
+build
+**/build
+coverage
+**/coverage
+
+.env
+.env.*
+!.env.example
+
+**/__tests__
+**/*.test.ts
+**/*.test.tsx
+
+.git
+.github
+*.md
+!README.md
+
+logs
+**/logs
+uploads
+**/uploads
+*.log
+
+.vscode
+.idea
+.DS_Store
+Thumbs.db

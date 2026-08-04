@@ -1,0 +1,68 @@
+{
+  "name": "medassist-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MedAssist AI - Full-stack intelligent medical assistant application",
+  "workspaces": [
+    "packages/backend",
+    "packages/frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n BACKEND,FRONTEND -c blue,green \"npm run dev --workspace=packages/backend\" \"npm run dev --workspace=packages/frontend\"",
+    "dev:backend": "npm run dev --workspace=packages/backend",
+    "dev:frontend": "npm run dev --workspace=packages/frontend",
+    "build": "npm run build --workspace=packages/backend && npm run build --workspace=packages/frontend",
+    "build:backend": "npm run build --workspace=packages/backend",
+    "build:frontend": "npm run build --workspace=packages/frontend",
+    "start": "npm run start --workspace=packages/backend",
+    "test": "npm run test --workspace=packages/backend && npm run test --workspace=packages/frontend",
+    "test:watch": "concurrently -n BACKEND,FRONTEND -c blue,green \"npm run test:watch --workspace=packages/backend\" \"npm run test:watch --workspace=packages/frontend\"",
+    "test:coverage": "npm run test:coverage --workspace=packages/backend && npm run test:coverage --workspace=packages/frontend",
+    "lint": "eslint . --ext .ts,.tsx --ignore-path .gitignore",
+    "lint:fix": "eslint . --ext .ts,.tsx --ignore-path .gitignore --fix",
+    "format": "prettier --write \"packages/**/src/**/*.{ts,tsx}\" \"packages/*/*.{js,ts}\" \"scripts/**/*.js\" \"*.{js,json,md}\"",
+    "format:check": "prettier --check \"packages/**/src/**/*.{ts,tsx}\" \"packages/*/*.{js,ts}\" \"scripts/**/*.js\" \"*.{js,json,md}\"",
+    "typecheck": "npm run typecheck --workspace=packages/backend && npm run typecheck --workspace=packages/frontend",
+    "prepare": "husky || true",
+    "clean": "rimraf packages/backend/dist packages/frontend/dist node_modules packages/backend/node_modules packages/frontend/node_modules",
+    "docker:up": "docker-compose up --build",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:prod:up": "docker compose -f docker-compose.prod.yml --env-file .env up -d --build",
+    "docker:prod:down": "docker compose -f docker-compose.prod.yml down",
+    "docker:prod:logs": "docker compose -f docker-compose.prod.yml logs -f",
+    "migrate": "node scripts/migrate-data.js",
+    "deploy": "bash scripts/deploy.sh"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
+    "concurrently": "^9.1.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
+    "prettier": "^3.4.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2"
+  },
+  "lint-staged": {
+    "packages/*/src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,json,md}": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "author": "",
+  "license": "MIT"
+}

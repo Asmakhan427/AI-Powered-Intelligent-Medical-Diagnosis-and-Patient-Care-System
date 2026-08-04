@@ -1,0 +1,89 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: medassist-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-medassist}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-change_me_in_production}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME:-medassist_ai}
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - medassist-network
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: medassist-redis
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-change_me_in_production}"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-change_me_in_production}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - medassist-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: packages/backend/Dockerfile
+    container_name: medassist-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      MONGO_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME:-medassist}:${MONGO_INITDB_ROOT_PASSWORD:-change_me_in_production}@mongodb:27017/${MONGO_DB_NAME:-medassist_ai}?authSource=admin
+      REDIS_URL: redis://:${REDIS_PASSWORD:-change_me_in_production}@redis:6379
+      JWT_SECRET: ${JWT_SECRET:-replace_with_a_long_random_secret_string}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-replace_with_another_long_random_secret}
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./packages/backend/ml:/app/packages/backend/ml
+    networks:
+      - medassist-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: packages/frontend/Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:3000/api}
+        VITE_SOCKET_URL: ${VITE_SOCKET_URL:-http://localhost:3000}
+    container_name: medassist-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - medassist-network
+
+networks:
+  medassist-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+  redis-data:
