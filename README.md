@@ -42,8 +42,8 @@ doctor/patient/appointment workflows.
 
 MedAssist AI is a full-stack medical assistant application that lets patients
 describe symptoms in plain text (or voice), get an AI-assisted preliminary
-diagnosis with a transparent explanation of *why*, and — when the symptoms
-warrant it — get routed straight to an emergency warning instead of a
+diagnosis with a transparent explanation of *why*, and when the symptoms
+warrant it and get routed straight to an emergency warning instead of a
 disease guess. Patients can then book appointments with the recommended
 specialist, and doctors get a dashboard to review and act on AI-generated
 reports.
