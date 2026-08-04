@@ -35,28 +35,6 @@ doctor/patient/appointment workflows.
   </tr>
 </table>
 
-> Add your own captures to [`docs/screenshots/`](docs/screenshots/) using the filenames above — they'll render automatically. See that folder's [README](docs/screenshots/README.md) for the full shot list.
-
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [AI/ML Pipeline](#aiml-pipeline)
-- [Tech Stack](#tech-stack)
-- [Architecture](#architecture)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Environment Variables](#environment-variables)
-- [Training / Placing the ML Model](#training--placing-the-ml-model)
-- [Running Tests](#running-tests)
-- [Docker Deployment](#docker-deployment)
-- [API Overview](#api-overview)
-- [Security Features](#security-features)
-- [Known Limitations](#known-limitations)
-- [Roadmap](#roadmap)
-- [License](#license)
 
 ---
 
